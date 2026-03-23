@@ -14,17 +14,13 @@ export default function Pokemons() {
   const API_URL = "http://localhost:3001/api/pokemon";
 
   const fetchPokemons = async () => {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        setPokemons(data);
-      } else {
-        console.error("Error backend:", data);
-        setPokemons([]);
-      }
-    } catch (error) {
-      console.error("Error al obtener pokemons:", error);
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      setPokemons(data);
+    } else {
+      console.error("Error backend:", data);
+      setPokemons([]);
     }
   };
 
@@ -53,29 +49,21 @@ export default function Pokemons() {
     const method = editId ? "PUT" : "POST";
     const url = editId ? `${API_URL}/${editId}` : API_URL;
 
-    try {
-      await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-      fetchPokemons();
-      clearForm();
-      setAlert(editId ? "Actualizado" : "Agregado");
-    } catch (error) {
-      console.error("Error guardando:", error);
-    }
+    fetchPokemons();
+    clearForm();
+    setAlert(editId ? "Actualizado" : "Agregado");
   };
 
   const deletePokemon = async (id) => {
-    try {
-      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      fetchPokemons();
-      setAlert("Eliminado");
-    } catch (error) {
-      console.error("Error eliminando:", error);
-    }
+    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    fetchPokemons();
+    setAlert("Eliminado");
   };
 
   const editPokemon = (p) => {
@@ -89,12 +77,12 @@ export default function Pokemons() {
   };
 
   return (
-    <div className="min-h-screen p-6" style={{ backgroundImage: 'url(/fondo4.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-white to-indigo-100 p-6">
       <div className="max-w-6xl mx-auto p-6 bg-white/80 backdrop-blur rounded-2xl shadow-2xl border border-slate-200">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-4xl font-extrabold text-indigo-700 tracking-tight">{editId ? "Editar" : "Todos los Pokémon"}</h1>
-            <p className="text-sm text-slate-600">Administra todos los pokémons con tabla de datos y acciones.</p>
+            <h1 className="text-4xl font-extrabold text-indigo-700 tracking-tight">{editId ? "Editar" : "Pokémons"}</h1>
+            <p className="text-sm text-slate-600">Administra pokémons con tabla de datos y acciones.</p>
           </div>
           <button
             onClick={clearForm}
@@ -174,7 +162,7 @@ export default function Pokemons() {
                     <th className="px-4 py-2">Especie</th>
                     <th className="px-4 py-2">Altura</th>
                     <th className="px-4 py-2">Peso</th>
-                    <th className="px-4 py-2">Gen</th>
+                    <th className="px-4 py-2">Generación</th>
                     <th className="px-4 py-2">Acciones</th>
                   </tr>
                 </thead>
